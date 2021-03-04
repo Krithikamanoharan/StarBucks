@@ -20,6 +20,15 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(result => app.listen(process.env.PORT || 3000))
   .catch(err => console.log(err));
 
+if(process.env.NODE_ENV==="production"){
+  app.use(express.static('client/build'))
+  const path=require('path');
+  app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname,"./client","build","index.html"));
+  });
+}
+
+
 // register view engine
 app.set('view engine', 'ejs');
 
